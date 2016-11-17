@@ -12,6 +12,7 @@ use WS\Tools\ClassLoader\ClassLoader;
 use WS\Tools\ClassLoader\PSR0ClassLoaderDriver;
 use WS\Tools\ClassLoader\PSR4ClassLoaderDriver;
 use WS\Tools\Events\EventsManager;
+use WS\Tools\IblockProperty\IblockPropertyService;
 use WS\Tools\Mail\MailService;
 use WS\Tools\ORM\Db\Gateway;
 use WS\Tools\ORM\Db\Manager;
@@ -69,6 +70,10 @@ class Module {
                 'bitrixOrmElement' => Gateway\BitrixOrmElement::className(),
             ))
         );
+
+        $this->_servicesLocator->willUse('iblockProperty', new IblockPropertyService(
+            $this->eventManager()
+        ));
     }
 
     /**
@@ -206,5 +211,12 @@ class Module {
      */
     public function getServiceLocator() {
         return $this->_servicesLocator;
+    }
+
+    /**
+     * @return IblockPropertyService
+     */
+    public function iblockProperty() {
+        return $this->getServiceLocator()->get('iblockProperty');
     }
 }
